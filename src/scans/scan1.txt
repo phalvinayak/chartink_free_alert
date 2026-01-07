@@ -1,0 +1,1 @@
+( {cash} (  daily "close - 1 candle ago close / 1 candle ago close * 100" >  10 ) ) 
