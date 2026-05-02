@@ -1,7 +1,7 @@
 import "dotenv/config";
 import fs from "fs";
-import path from "path";
 import cron from "node-cron";
+import path from "path";
 import { getDataFromChartink } from "./utils/chartink.js";
 import { sendTelegramMessage } from "./utils/telegram.js";
 
@@ -24,7 +24,11 @@ async function runScans() {
         const fileName = file.substring(0, file.lastIndexOf("."));
         let message = `🔔🔔🔔 ${fileName} 🔔🔔🔔\n\n`;
         data.forEach((stock, index) => {
-          message += `📈 *${stock.nsecode}* - 💰 ${stock.close}\n`;
+          message += `📈 [${
+            stock.nsecode
+          }](https://www.tradingview.com/chart/?symbol=NSE:${stock.nsecode.toUpperCase()}&interval=D) - 💰 ${
+            stock.close
+          }\n`;
         });
         message += `\n⏰ Triggered at ${currTime.getHours()}:${currTime.getMinutes()}`;
         await sendTelegramMessage(message);
@@ -35,7 +39,7 @@ async function runScans() {
   }
 }
 
-cron.schedule('*/5 * * * *', runScans);
+cron.schedule("*/5 * * * *", runScans);
 runScans();
 
 export { getDataFromChartink };
